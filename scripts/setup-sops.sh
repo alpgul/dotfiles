@@ -67,7 +67,7 @@ if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$GPG_PUBLIC_KEY" ]; then
     echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import
     
     # Her zaman DOTFILES olarak kullan
-    GPG_KEY_ID="DOTFILES"
+    GPG_KEY_ID="E784D2C44FEFD7561B773DD1CC997FB203A5117C"
     
     # Anahtarı güvenli hale getir
     echo -e "5\ny\n" | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" trust

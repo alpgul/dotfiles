@@ -3,9 +3,9 @@
 
 creation_rules:
   - path_regex: '.*'
-    pgp: 'DOTFILES'
+    pgp: 'E784D2C44FEFD7561B773DD1CC997FB203A5117C'
 
 # GPG key groups
 key_groups:
   - pgp:
-      - 'DOTFILES'
+      - 'E784D2C44FEFD7561B773DD1CC997FB203A5117C'

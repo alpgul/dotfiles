@@ -69,11 +69,11 @@ echo ""
 
 # Public key'i export et (DOTFILES olarak)
 echo "📤 Public key export ediliyor..."
-GPG_PUBLIC_KEY=$(gpg --armor --export "DOTFILES" | base64 -w 0)
+GPG_PUBLIC_KEY=$(gpg --armor --export "E784D2C44FEFD7561B773DD1CC997FB203A5117C" | base64 -w 0)
 
 # Private key'i export et (DOTFILES olarak)
 echo "📤 Private key export ediliyor..."
-GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "DOTFILES" | base64 -w 0)
+GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "E784D2C44FEFD7561B773DD1CC997FB203A5117C" | base64 -w 0)
 
 echo "✅ Anahtarlar başarıyla export edildi!"
 echo ""
