@@ -5,6 +5,11 @@
 
 set -e
 
+# Script'in bulunduğu dizini al
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Proje dizinine git (script'in bir üst dizini)
+cd "$SCRIPT_DIR/.."
+
 echo "🔐 GPG Key Creation Tool for SOPS"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
@@ -91,6 +96,9 @@ GPG_PRIVATE_KEY=$GPG_PRIVATE_KEY
 # Export Commands (for manual usage)
 export GPG_PUBLIC_KEY="$GPG_PUBLIC_KEY"
 export GPG_PRIVATE_KEY="$GPG_PRIVATE_KEY"
+
+# Kontrol komutu
+# Oluşturulan anahtarı kontrol etmek için: gpg --list-keys "DOTFILES"
 EOF
 
 echo "✅ Secrets dosyası oluşturuldu: $SECRETS_FILE"

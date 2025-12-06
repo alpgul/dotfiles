@@ -18,8 +18,33 @@ sudo apt-get update
 sudo apt-get install -y curl gnupg2 gettext-base
 
 # SOPS'i indir ve kur
-SOPS_VERSION=$(curl -s https://api.github.com/repos/getsops/sops/releases/latest | grep tag_name | cut -d '"' -f 4)
+SOPS_VERSION=$(curl -s https://api.github.com/repos/getsops/sops/releases/latest | grep '"tag_name":' | cut -d '"' -f 4)
+echo "📥 SOPS ${SOPS_VERSION} indiriliyor..."
+
+# Eğer versiyon alınamazsa varsayılan bir versiyon kullan
+if [ -z "$SOPS_VERSION" ]; then
+    echo "⚠️  SOPS versiyonu alınamadı, varsayılan versiyon kullanılacak..."
+    SOPS_VERSION="v3.8.1"
+fi
+
 curl -L -o sops "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+
+# İndirilen dosyanın boş olup olmadığını kontrol et
+if [ ! -s sops ]; then
+    echo "❌ SOPS indirilemedi veya dosya boş!"
+    echo "Alternatif olarak manuel kurulum denenecek..."
+    # Alternatif kurulum yöntemi
+    wget -O sops "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+fi
+
+# Dosyanın binary olduğunu kontrol et
+if file sops | grep -q "ASCII"; then
+    echo "❌ İndirilen dosya binary değil, hata var!"
+    echo "İçerik:"
+    head -5 sops
+    exit 1
+fi
+
 chmod +x sops
 sudo mv sops /usr/local/bin/
 
@@ -62,7 +87,7 @@ echo "🧪 Git filter'ları test ediliyor..."
 
 # Git konfigürasyonunu ekle
 echo "🔧 Git konfigürasyonu ayarlanıyor..."
-git config --local include.path .gitconfig
+git config --local include.path ../.gitconfig
 
 if git config --get filter.sops.clean > /dev/null 2>&1; then
     echo "✅ SOPS filter'ları başarıyla yapılandırıldı"
