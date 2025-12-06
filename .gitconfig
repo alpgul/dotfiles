@@ -4,7 +4,7 @@ required = true
 smudge = sops decrypt --filename-override "%f"
 ; but enctyption will regenerate file even if there are no changes,
 ; so we need to decrypt existing file first, and perform encryption only if decrypted content is different
-clean = "bash -c 'c=\"$(cat -)\" && if git cat-file -e \"HEAD:%f\" 2>/dev/null; then diff <(echo \"$c\") <(git cat-file -p \"HEAD:%f\" | sops decrypt --filename-override \"%f\") >/dev/null 2>&1 && git cat-file -p \"HEAD:%f\" || (sops encrypt --filename-override \"%f\" <<<$c); else sops encrypt --filename-override \"%f\" <<<$c; fi'"
+clean = "bash -c 'c=\"$(cat -)\" && if git cat-file -e \"HEAD:%f\" 2>/dev/null; then HEAD_CONTENT=\"$(git cat-file -p \"HEAD:%f\")\" && DECRYPTED=\"$(echo \"$HEAD_CONTENT\" | sops decrypt --filename-override \"%f\" 2>/dev/null || echo \"$HEAD_CONTENT\")\" && if diff <(echo \"$c\") <(echo \"$DECRYPTED\") >/dev/null 2>&1; then echo \"$HEAD_CONTENT\"; else sops encrypt --filename-override \"%f\" <<<\"$c\"; fi; else sops encrypt --filename-override \"%f\" <<<\"$c\"; fi'"
 
 [diff "sops"]
 ; and as the last piece, we need to convert the file
