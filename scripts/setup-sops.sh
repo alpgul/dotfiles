@@ -87,7 +87,7 @@ echo "🧪 Git filter'ları test ediliyor..."
 
 # Git konfigürasyonunu ekle
 echo "🔧 Git konfigürasyonu ayarlanıyor..."
-git config --local include.path ../.gitconfig
+git config --local include.path /workspaces/.codespaces/.persistedshare/dotfiles/.gitconfig
 
 if git config --get filter.sops.clean > /dev/null 2>&1; then
     echo "✅ SOPS filter'ları başarıyla yapılandırıldı"
