@@ -48,8 +48,8 @@ Key-Type: RSA
 Key-Length: 4096
 Subkey-Type: RSA
 Subkey-Length: 4096
-Name-Real: $RANDOM_NAME
-Name-Email: $RANDOM_EMAIL
+Name-Real: DOTFILES
+Name-Email: dotfiles@example.local
 Expire-Date: 0
 %no-protection
 EOF
@@ -57,18 +57,18 @@ EOF
 echo "✅ GPG anahtarı başarıyla oluşturuldu!"
 echo ""
 
-# Anahtar ID'sini al
-GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2 | head -1)
-echo "🔍 Anahtar ID: $GPG_KEY_ID"
+# Anahtar ID'sini al (sadece bilgi için)
+TEMP_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2 | head -1)
+echo "🔍 Oluşturulan anahtar ID: $TEMP_KEY_ID"
 echo ""
 
-# Public key'i export et
+# Public key'i export et (DOTFILES olarak)
 echo "📤 Public key export ediliyor..."
-GPG_PUBLIC_KEY=$(gpg --armor --export "$GPG_KEY_ID" | base64 -w 0)
+GPG_PUBLIC_KEY=$(gpg --armor --export "DOTFILES" | base64 -w 0)
 
-# Private key'i export et
+# Private key'i export et (DOTFILES olarak)
 echo "📤 Private key export ediliyor..."
-GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "$GPG_KEY_ID" | base64 -w 0)
+GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "DOTFILES" | base64 -w 0)
 
 echo "✅ Anahtarlar başarıyla export edildi!"
 echo ""
@@ -81,7 +81,6 @@ cat > "$SECRETS_FILE" << EOF
 # ⚠️  BU DOSYAYI GIT'E EKLEMEYİN! (.gitignore'a ekleyin)
 
 # GPG Key Information
-GPG_KEY_ID=$GPG_KEY_ID
 GPG_KEY_NAME="$RANDOM_NAME"
 GPG_KEY_EMAIL="$RANDOM_EMAIL"
 
@@ -90,7 +89,6 @@ GPG_PUBLIC_KEY=$GPG_PUBLIC_KEY
 GPG_PRIVATE_KEY=$GPG_PRIVATE_KEY
 
 # Export Commands (for manual usage)
-export GPG_KEY_ID="$GPG_KEY_ID"
 export GPG_PUBLIC_KEY="$GPG_PUBLIC_KEY"
 export GPG_PRIVATE_KEY="$GPG_PRIVATE_KEY"
 EOF

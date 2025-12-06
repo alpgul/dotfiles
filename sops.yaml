@@ -1,0 +1,11 @@
+# SOPS Configuration File
+# Static configuration with pre-generated random key ID
+
+creation_rules:
+  - path_regex: '.*'
+    pgp: 'DOTFILES'
+
+# GPG key groups
+key_groups:
+  - pgp:
+      - 'DOTFILES'

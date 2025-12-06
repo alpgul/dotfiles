@@ -32,7 +32,7 @@ mkdir -p ~/.gnupg
 chmod 700 ~/.gnupg
 
 # Environment variable'dan GPG anahtarları ile kurulum dene
-if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$GPG_PUBLIC_KEY" ] && [ -n "$GPG_KEY_ID" ]; then
+if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$GPG_PUBLIC_KEY" ]; then
     echo "🔑 Environment variable'dan GPG anahtarları import ediliyor..."
     
     # Public key'i import et
@@ -41,16 +41,18 @@ if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$GPG_PUBLIC_KEY" ] && [ -n "$GPG_KEY_ID" ]
     # Private key'i import et
     echo "$GPG_PRIVATE_KEY" | base64 -d | gpg --import
     
+    # Her zaman DOTFILES olarak kullan
+    GPG_KEY_ID="DOTFILES"
+    
     # Anahtarı güvenli hale getir
     echo -e "5\ny\n" | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" trust
     
-    echo "✅ GPG anahtarları başarıyla import edildi"
+    echo "✅ GPG anahtarları başarıyla import edildi (Key ID: $GPG_KEY_ID)"
 else
     echo "⚠️  GPG environment variable'ları bulunamadı"
     echo "ℹ️  Gerekli environment variable'lar:"
     echo "   - GPG_PRIVATE_KEY (base64 encoded)"
     echo "   - GPG_PUBLIC_KEY (base64 encoded)"
-    echo "   - GPG_KEY_ID"
     echo ""
     echo "   './create-gpg.sh' script'ini çalıştırarak yeni anahtar oluşturabilirsiniz"
 fi
@@ -80,18 +82,16 @@ cat << 'EOF'
    ./create-gpg.sh
 
 2. Oluşturulan anahtarları environment variable'a ekleyin:
-   export GPG_PRIVATE_KEY="YOUR_BASE64_ENCODED_PRIVATE_KEY"
-   export GPG_PUBLIC_KEY="YOUR_BASE64_ENCODED_PUBLIC_KEY"
-   export GPG_KEY_ID="YOUR_KEY_ID"
+ export GPG_PRIVATE_KEY="YOUR_BASE64_ENCODED_PRIVATE_KEY"
+ export GPG_PUBLIC_KEY="YOUR_BASE64_ENCODED_PUBLIC_KEY"
 
 3. Veya .env dosyasına ekleyin (GİT'E EKLEMEYİN!):
-   GPG_PRIVATE_KEY=your-base64-private-key
-   GPG_PUBLIC_KEY=your-base64-public-key
-   GPG_KEY_ID=your-key-id
+ GPG_PRIVATE_KEY=your-base64-private-key
+ GPG_PUBLIC_KEY=your-base64-public-key
 
 4. GitHub Actions/Codespaces için:
-   Repository → Settings → Secrets → New secret
-   Name: GPG_PRIVATE_KEY, GPG_PUBLIC_KEY, GPG_KEY_ID
+ Repository → Settings → Secrets → New secret
+ Name: GPG_PRIVATE_KEY, GPG_PUBLIC_KEY
 
 🔒 SOPS Git Filters ile Otomatik Şifreleme:
    • Git add/push: Dosyalar otomatik şifrelenir
