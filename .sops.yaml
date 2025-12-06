@@ -1,7 +1,12 @@
 # SOPS Configuration File
-# Static configuration with pre-generated random key ID
+# Configuration for F09CDCB0DBC34F6F GPG key
 
 creation_rules:
+  # JSON files containing OpenAI API keys
+  - path_regex: '.*\.json$'
+    encrypted_regex: '^(.*openAiApiKey.*)$'
+    pgp: 'F09CDCB0DBC34F6F'
+  # All other files
   - path_regex: '.*'
     pgp: 'F09CDCB0DBC34F6F'
 
