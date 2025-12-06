@@ -1,1 +1,1 @@
-**/secrets/** filter=sops diff=sops
+/vscode/configs/** filter=sops diff=sops

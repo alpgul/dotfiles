@@ -3,9 +3,9 @@
 
 creation_rules:
   - path_regex: '.*'
-    pgp: 'E784D2C44FEFD7561B773DD1CC997FB203A5117C'
+    pgp: 'F09CDCB0DBC34F6F'
 
 # GPG key groups
 key_groups:
   - pgp:
-      - 'E784D2C44FEFD7561B773DD1CC997FB203A5117C'
+      - 'F09CDCB0DBC34F6F'

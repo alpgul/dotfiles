@@ -37,15 +37,6 @@ echo ""
 mkdir -p ~/.gnupg
 chmod 700 ~/.gnupg
 
-# Random kullanıcı bilgileri oluştur
-RANDOM_NAME="SOPS User $(date +%s)"
-RANDOM_EMAIL="sops-$(date +%s)@example.local"
-
-echo "👤 Random kullanıcı bilgileri oluşturuluyor:"
-echo "   Name: $RANDOM_NAME"
-echo "   Email: $RANDOM_EMAIL"
-echo ""
-
 # GPG anahtarı oluştur
 echo "🔑 GPG anahtarı oluşturuluyor..."
 gpg --batch --gen-key << EOF
@@ -62,18 +53,18 @@ EOF
 echo "✅ GPG anahtarı başarıyla oluşturuldu!"
 echo ""
 
-# Anahtar ID'sini al (sadece bilgi için)
-TEMP_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2 | head -1)
-echo "🔍 Oluşturulan anahtar ID: $TEMP_KEY_ID"
+# Anahtar ID'sini al
+GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk '{print $2}' | cut -d'/' -f2 | head -1)
+echo "🔍 Anahtar ID: $GPG_KEY_ID"
 echo ""
 
 # Public key'i export et (DOTFILES olarak)
 echo "📤 Public key export ediliyor..."
-GPG_PUBLIC_KEY=$(gpg --armor --export "E784D2C44FEFD7561B773DD1CC997FB203A5117C" | base64 -w 0)
+GPG_PUBLIC_KEY=$(gpg --armor --export "$GPG_KEY_ID" | base64 -w 0)
 
 # Private key'i export et (DOTFILES olarak)
 echo "📤 Private key export ediliyor..."
-GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "E784D2C44FEFD7561B773DD1CC997FB203A5117C" | base64 -w 0)
+GPG_PRIVATE_KEY=$(gpg --armor --export-secret-key "$GPG_KEY_ID" | base64 -w 0)
 
 echo "✅ Anahtarlar başarıyla export edildi!"
 echo ""
@@ -86,8 +77,7 @@ cat > "$SECRETS_FILE" << EOF
 # ⚠️  BU DOSYAYI GIT'E EKLEMEYİN! (.gitignore'a ekleyin)
 
 # GPG Key Information
-GPG_KEY_NAME="$RANDOM_NAME"
-GPG_KEY_EMAIL="$RANDOM_EMAIL"
+GPG_KEY_ID=$GPG_KEY_ID
 
 # GPG Keys (Base64 encoded)
 GPG_PUBLIC_KEY=$GPG_PUBLIC_KEY
