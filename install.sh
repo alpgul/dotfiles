@@ -65,6 +65,7 @@ show_usage() {
     echo "  -r, --remove            Sync symlink'ini kaldırır"
     echo "  -b, --backup            Mevcut ayarları yedekler"
     echo "  --status                Sync durumunu gösterir"
+    echo "  --sops                  SOPS ve GPG kurulumu yapar"
     echo ""
     echo "Bu script, VSCode settings sync için symlink kurulumu yapar."
     echo "vscode/configs/settings.json dosyasını ~/.vscode-remote/data/Machine/settings.json"
@@ -75,6 +76,7 @@ show_usage() {
     echo "  $0 -s                   VSCode settings sync kurulumu yapar"
     echo "  $0 -r                   Sync symlink'ini kaldırır"
     echo "  $0 --status             Sync durumunu gösterir"
+    echo "  $0 --sops               SOPS ve GPG kurulumu yapar"
 }
 
 # VSCode settings sync kurulumu
@@ -88,6 +90,17 @@ sync_settings() {
         "$SCRIPT_DIR/scripts/set-vscode-settings.sh"
     else
         log_error "Sync scripti bulunamadı: $SCRIPT_DIR/scripts/set-vscode-settings.sh"
+        exit 1
+    fi
+    
+    echo ""
+    log_step "SOPS ve GPG Kurulumu"
+    
+    # SOPS scriptini çalıştır
+    if [[ -f "$SCRIPT_DIR/scripts/setup-sops.sh" ]]; then
+        "$SCRIPT_DIR/scripts/setup-sops.sh"
+    else
+        log_error "SOPS scripti bulunamadı: $SCRIPT_DIR/scripts/setup-sops.sh"
         exit 1
     fi
 }
@@ -351,6 +364,10 @@ main() {
                 mode="status"
                 shift
                 ;;
+            --sops)
+                mode="sops"
+                shift
+                ;;
             -*)
                 log_error "Bilinmeyen seçenek: $1"
                 show_usage
@@ -385,6 +402,14 @@ main() {
             ;;
         "status")
             show_sync_status
+            ;;
+        "sops")
+            if [[ -f "$SCRIPT_DIR/scripts/setup-sops.sh" ]]; then
+                "$SCRIPT_DIR/scripts/setup-sops.sh"
+            else
+                log_error "SOPS scripti bulunamadı: $SCRIPT_DIR/scripts/setup-sops.sh"
+                exit 1
+            fi
             ;;
     esac
 }

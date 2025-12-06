@@ -1,0 +1,13 @@
+[filter "sops"]
+required = true
+; we decrypt files as usual, without any additional magic, there are no tricks here
+smudge = sops decrypt --filename-override "%f"
+; but enctyption will regenerate the file even if there are no changes,
+; so we need to decrypt the existing file first, and perform the encryption only if decrypted content is different
+clean = bash -c 'c="$(cat -)" && diff <(echo "$c") <(git cat-file -p "HEAD:%f" | sops decrypt --filename-override "%f") >/dev/null 2>&1 && git cat-file -p "HEAD:%f" || (sops encrypt --filename-override "%f" <<<"$c")'
+
+[diff "sops"]
+; and as the last piece, we need to convert the file
+; but as the local file is decrypted already, we need to fail safely to just printing it
+textconv = sh -c 'sops decrypt "$0" 2>/dev/null || cat "$0"'
+cachetextconv = false
