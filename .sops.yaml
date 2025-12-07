@@ -4,7 +4,7 @@
 creation_rules:
   # JSON files containing OpenAI API keys
   - path_regex: '.*\.json$'
-    encrypted_regex: '^(.*openAiApiKey.*)$'
+    encrypted_regex: '^(.*ApiKey.*)$'
     pgp: 'F09CDCB0DBC34F6F'
   # All other files
   - path_regex: '.*'

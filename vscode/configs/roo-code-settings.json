@@ -6,8 +6,17 @@
 				"diffEnabled": true,
 				"fuzzyMatchThreshold": 1,
 				"reasoningEffort": "medium",
+				"apiModelId": "gemini-2.5-flash",
+				"geminiApiKey": "ENC[AES256_GCM,data:ITrEtCA+dhKb96+fZIgAFbI1AKI1yLGKJoTQjtxuBevx+tHCSaqG,iv:1DXUcuzU62YZeeFcwKrkgDG2QP5VQBS5yIqHHNPkqLo=,tag:g/WxNlFYLMW0cW7QxpGjXQ==,type:str]",
+				"apiProvider": "gemini",
+				"id": "o0kriu1srzc"
+			},
+			"agentrouter": {
+				"diffEnabled": true,
+				"fuzzyMatchThreshold": 1,
+				"reasoningEffort": "medium",
 				"openAiBaseUrl": "https://agentrouter.org/v1",
-				"openAiApiKey": "ENC[AES256_GCM,data:C861zJoYHmGQDD3aNSxJGB2kAc4T3M/e3nJFzQww6mHiFfd93cG+m1Z9GR1Q1ecK8wNW,iv:5O6egAAFLvpdF0ubvskTFeOGoodyle51cytxVzXtNqQ=,tag:iUepGnTxYYXXXqKDrM5qbw==,type:str]",
+				"openAiApiKey": "ENC[AES256_GCM,data:cIRVbE4RkE2hbYsCgCQTD6geaErv912bbG8becK1BJ2IHJ9cv3HBNjrS2Ho9Ky5T0hUX,iv:Q89C2uyDExP4N7t7XFOB/Vs/AhFsYoReT7N7Hqh45lA=,tag:gtg4uQQ5d3sOwbvjhUpEEg==,type:str]",
 				"openAiModelId": "glm-4.6",
 				"openAiHeaders": {},
 				"apiProvider": "openai",
@@ -20,21 +29,15 @@
 			"ask": "o0kriu1srzc",
 			"debug": "o0kriu1srzc",
 			"orchestrator": "o0kriu1srzc"
-		},
-		"migrations": {
-			"rateLimitSecondsMigrated": true,
-			"diffSettingsMigrated": true,
-			"openAiHeadersMigrated": true,
-			"consecutiveMistakeLimitMigrated": true,
-			"todoListEnabledMigrated": true
 		}
 	},
 	"globalSettings": {
-		"lastShownAnnouncementId": "nov-2025-v3.34.0-browser-use-2-cloud-paid",
+		"lastShownAnnouncementId": "dec-2025-v3.36.0-context-rewind-roo-provider",
 		"openRouterImageApiKey": "",
 		"openRouterImageGenerationSelectedModel": "",
 		"condensingApiConfigId": "",
 		"customCondensingPrompt": "",
+		"autoApprovalEnabled": true,
 		"alwaysAllowReadOnly": false,
 		"alwaysAllowReadOnlyOutsideWorkspace": false,
 		"alwaysAllowWrite": false,
@@ -250,19 +253,20 @@
 		"customSupportPrompts": {},
 		"includeTaskHistoryInEnhance": true,
 		"reasoningBlockCollapsed": true,
-		"profileThresholds": {}
+		"profileThresholds": {},
+		"hasOpenedModeSelector": true
 	},
 	"sops": {
-		"lastmodified": "2025-12-06T20:13:16Z",
-		"mac": "ENC[AES256_GCM,data:TStdp687dqPOu+MJfMRT+r1eedzEIA07TdvXeglGUXt/YoMsPhtHaSblUmzDAbdDlIz3BHVDlVPWC2iO3O+rHSWvpEeUC7WzCzDakpIwutXZKg86TuYonpPPEHqZu0lgjHhdkasBuH2aJ8KwBfs5+qoS8oPtLm9BgOcz+BaNA3Y=,iv:aUBiqW2EAKpgJA9O5gqj1VpH8CAdBM4v6YlXEwhPLBQ=,tag:nBTqqNDzX+/57gxrV0/Rpw==,type:str]",
+		"lastmodified": "2025-12-07T13:49:02Z",
+		"mac": "ENC[AES256_GCM,data:EWEegpcPMGpTowELyyceHKX5bwzCazsWyKaKc7xJVd6YxgmGzlllCtFGxXllTm1AbT9M3vU9U/K7p54Kyi7twXX0BOoJwFPdPq0q+dYMb1SpqybNEbUgrDmK9sttVtDHYzq5F/YARmEV6ahKfjYbB57vhhSx23MN4aKYdRMwSqQ=,iv:naIAObUClfYM5kgKHltkLBosxFRciaEXqSIfA04qmTE=,tag:Zb+u6NFml8B6Slo1F6Vh5Q==,type:str]",
 		"pgp": [
 			{
-				"created_at": "2025-12-06T20:13:16Z",
-				"enc": "-----BEGIN PGP MESSAGE-----\n\nhQIMA2RpIYiYvRMFAQ/+NPXEyZ68I4aHLuvoOjAvKzpBYEq2Y20lID5aA6b7WSdE\nncMRp4CE9nGF6bM9U6n1HbZtJEPvK0y4kg/vxfNwXl2j6fZXKcR/GQUKQ0yDBXVT\nnMoZr9ql87QZ0E7wsWfCcPnXJV15q5fsNtUSacLrfgRx0tjaYNpSs0r2ov2nKY90\nGegrMIMaeddCIMbki7rzH71slqX6ngI3rwxOtlQO+hvFUZ5sqMYlJHe5Hhdv9q8R\nFVrHjcsHDWcivu/Na6lnp9JF1Lg13ktorS6wrryafBUxNB0AdbXSYmZHYg1BsWPz\nIqyK6kVtSSnhdAgB6dXnaDr1aop13ZJyF3sPG8dioYL1tl7M4tdg/y8dB3R99SDK\nuySvUyWwv6dNPaMVxVJ9rDoljIaAqExoDCCuma0psGpBXpeQkZRi7b8yOlZmD306\npYCM0Hy+c4xR4N+jRUnHVksBjDERngyT5UZg2FrLijW8aqH9VonFvf6ghhVWzxSs\nyGn7WA3FcTKzOMwaOnC6ZeSEAQpa+6xmWvKO2iHBm58o4bLO50kBIIYsCanALsWR\naRLe5WROjpJmf9HQhjhSLm5MuO9JRAkOvdAuoeZfhtGd05IsE2bN5GBky4WovNPk\n05Gmc1oIiu+rxmpagYkMmhSK1xWe8gjU7a2L+LQU23JNEnsxW/nLJsukC8Rqhq3U\naAEJAhDwrk7G3GMGHFSIYK2NUWEzWylv5PcGDBTpPvKQHENe18CtFGwbS+pivY0C\nc7pBJr8J7FiI6YkS4qu/6xPlto0VcmD4GXje/E1JdZSGj3Yl4Cnb7msvVArctg4D\nrqcj4vR9yTrY\n=UiXL\n-----END PGP MESSAGE-----",
+				"created_at": "2025-12-07T13:49:02Z",
+				"enc": "-----BEGIN PGP MESSAGE-----\n\nhQIMA2RpIYiYvRMFAQ//Vpq58ntN8zbudQBs19YBWu7XFL49gIbqijsjJoavRPhY\nJ5kfBEdf3oajKR3qxwljsRvKuwbZqxAUNiEEZpICWQPf/hHfGIGro5aqJOyV/I3a\nuLCP/lwn1k4hJzeyQvEJ1s7RWs+GWkgUBoyly7anpxDLcixj8Kt0WQytysIbxsfg\nsOHsbVscB88ll/q/j3hr55DlLyLUm0q+34o95Jv+8wDS21sE0ygFNa9vnhiqSh2G\n7S0lHO2XqidynUwuodeYn1wAc7T+bUUG+I56MEib1iWneH2uznA//ddwJo1YZkrI\neAIV6PGlhwC0QDRJsWBSQdd7I8kuEeafOKAxjhnEMpwy2v1FYdYihVCi/FafUn+Q\nH+aWXnK0+0VI2reML9Oqu0cjF3EPmVPvsqkr1B8O/sOpKK80yp+bzC9YeRGu1onm\nBvEz6sCLmhVvgl1fELX8azJyJDXjK2lsDvfbEyMe+S8nIlCpxrqa35pjOT4/BdGb\nR2puFiDvJEN+ML+UfaQ0A9z6WWy7GJEJ3yk9tlfD3IPKJfJDApW3P00yu0zZadCO\nvr1NjYXX7bacbuk7TuWSoMtQIUxslCBRaJ3veRnxR8jf05/iSm9ZH6EK2k2FL9nu\nxQfQzRwXzL+EqU37AOYNF8wWzET+D3OiwFRLSWZ1m+x11ihMxseP3Mh8KptOQOTU\naAEJAhBTGwcitSLFXDeZ3yKp0hJPg+gC7mlmDwjClKssRcA2XaSFtOB+DEZQxZhz\nffwgOhGk/8pQvmm1Ss8MtrsM1287Eh0uprozWQPHKXWat+/4quT+ExFe3yhTfIMm\nci8dZ5qYGXIc\n=8wV5\n-----END PGP MESSAGE-----",
 				"fp": "F09CDCB0DBC34F6F"
 			}
 		],
-		"encrypted_regex": "^(.*openAiApiKey.*)$",
+		"encrypted_regex": "^(.*ApiKey.*)$",
 		"version": "3.11.0"
 	}
 }

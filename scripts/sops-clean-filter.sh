@@ -64,7 +64,7 @@ if git cat-file -e "HEAD:$1" 2>/dev/null; then
         # Farklı - şifrele ve dosyaya yaz
         log "İçerik farklı, şifreleniyor: $1"
         encrypted_content="$(sops encrypt --filename-override "$1" <<<"$decrypted_content")"
-        echo "$encrypted_content" > "$1"
+        echo "$encrypted_content"
     fi
 else
     # Yeni dosya - şifrele ve dosyaya yaz
