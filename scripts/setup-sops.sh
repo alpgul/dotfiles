@@ -109,8 +109,17 @@ if [ -n "$GPG_PRIVATE_KEY" ] && [ -n "$GPG_PUBLIC_KEY" ]; then
     # Her zaman DOTFILES olarak kullan
     GPG_KEY_ID="F09CDCB0DBC34F6F"
     
-    # Anahtarı güvenli hale getir
-    echo -e "5\ny\n" | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" trust
+    # Anahtarı güvenli hale getir (non-interactive mode)
+    echo -e "5\ny\n" | gpg --batch --command-fd 0 --edit-key "$GPG_KEY_ID" trust 2>/dev/null || {
+        # Alternatif yöntem: trust db'yi doğrudan düzenle
+        echo -e "trust\n5\ny\nsave\n" | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" 2>/dev/null || {
+            # Son çare: manuel olarak trust seviyesini ayarla
+            (echo "5"; echo "y") | gpg --command-fd 0 --edit-key "$GPG_KEY_ID" trust 2>/dev/null || {
+                log "UYARI: GPG trust ayarlaması otomatik yapılamadı, manuel olarak ayarlamanız gerekebilir"
+                echo "⚠️  GPG trust ayarlaması otomatik yapılamadı"
+            }
+        }
+    }
     
     log "GPG anahtarları başarıyla import edildi (Key ID: ${GPG_KEY_ID})"
     echo "✅ GPG anahtarları başarıyla import edildi (Key ID: $GPG_KEY_ID)"
