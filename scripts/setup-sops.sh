@@ -174,6 +174,24 @@ else
     done
 fi
 
+# Mevcut şifreli dosyaları decrypt et
+log "Mevcut şifreli dosyalar decrypt ediliyor..."
+echo "🔓 Mevcut şifreli dosyalar decrypt ediliyor..."
+
+if [ -f "$SCRIPT_DIR/decrypt-sops-files.sh" ]; then
+    log "decrypt-sops-files.sh script'i çalıştırılıyor..."
+    if bash "$SCRIPT_DIR/decrypt-sops-files.sh"; then
+        log "decrypt-sops-files.sh başarıyla çalıştırıldı"
+        echo "✅ Mevcut dosyalar başarıyla decrypt edildi"
+    else
+        log "HATA: decrypt-sops-files.sh çalıştırılamadı"
+        echo "❌ Mevcut dosyalar decrypt edilemedi"
+    fi
+else
+    log "UYARI: decrypt-sops-files.sh bulunamadı"
+    echo "⚠️  decrypt-sops-files.sh bulunamadı"
+fi
+
 # Kullanım bilgileri
 cat << 'EOF'
 

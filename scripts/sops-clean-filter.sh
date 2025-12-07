@@ -1,11 +1,14 @@
 #!/bin/bash
 # scripts/sops-clean-filter.sh
 
-content="$(cat -)"
+# Betik dizinini al ve proje köküne git
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_ROOT"
 
 # Loglama fonksiyonu
 log() {
-    local log_dir="$(dirname "$0")/../logs"
+    local log_dir="$PROJECT_ROOT/logs"
     local log_file="$log_dir/sops-clean-filter.log"
     
     # Log dizinini oluştur (yoksa)
@@ -33,10 +36,16 @@ log_error() {
 set -eE
 trap 'log_error "$BASH_COMMAND" "$LINENO" "$1"' ERR
 
-is_encrypted() {
-    echo "$1" | grep -q "sops"
-}
 
+# Eğer standart girdi boşsa ve dosya varsa, dosyadan oku
+if [ -t 0 ] && [ -f "$1" ]; then
+    content="$(cat "$1")"
+else
+    content="$(cat -)"
+fi
+
+# İçerik zaten decrypted olarak geliyor
+decrypted_content="$content"
 # HEAD'de dosya var mı?
 if git cat-file -e "HEAD:$1" 2>/dev/null; then
     log "HEAD'de mevcut dosya işleniyor: $1"
@@ -47,32 +56,20 @@ if git cat-file -e "HEAD:$1" 2>/dev/null; then
     head_decrypted="$(echo "$head_content" | sops decrypt --filename-override "$1" 2>/dev/null || echo "$head_content")"
     
     # İçerik aynı mı?
-    if diff <(echo "$content") <(echo "$head_decrypted") >/dev/null 2>&1; then
+    if diff <(echo "$decrypted_content") <(echo "$head_decrypted") >/dev/null 2>&1; then
         # Aynı - HEAD'i döndür
         log "İçerik aynı, HEAD sürümü kullanılıyor: $1"
         echo "$head_content"
     else
-        # Farklı - şifreli mi kontrol et
-        if is_encrypted "$content"; then
-            # Zaten şifreli
-            log "İçerik farklı ve zaten şifreli: $1"
-            echo "$content"
-        else
-            # Şifrele
-            log "İçerik farklı ve şifresiz, şifreleniyor: $1"
-            sops encrypt --filename-override "$1" <<<"$content"
-        fi
+        # Farklı - şifrele ve dosyaya yaz
+        log "İçerik farklı, şifreleniyor: $1"
+        encrypted_content="$(sops encrypt --filename-override "$1" <<<"$decrypted_content")"
+        echo "$encrypted_content" > "$1"
     fi
 else
-    # Yeni dosya - şifreli mi kontrol et
+    # Yeni dosya - şifrele ve dosyaya yaz
     log "Yeni dosya işleniyor: $1"
-    if is_encrypted "$content"; then
-        # Zaten şifreli
-        log "Yeni dosya zaten şifreli: $1"
-        echo "$content"
-    else
-        # Şifrele
-        log "Yeni dosya şifreleniyor: $1"
-        sops encrypt --filename-override "$1" <<<"$content"
-    fi
+    log "Yeni dosya şifreleniyor: $1"
+    encrypted_content="$(sops encrypt --filename-override "$1" <<<"$decrypted_content")"
+    echo "$encrypted_content" > "$1"
 fi
