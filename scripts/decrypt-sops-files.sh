@@ -82,4 +82,15 @@ echo "$gitattributes_content" | while IFS= read -r line; do
     fi
 done
 
-log "Tüm dosyalar işlendi."
+# Decrypt işleminden sonra değişen dosyaları git'e ekle
+log "Değişen dosyalar git'e ekleniyor..."
+echo "📝 Değişen dosyalar git'e ekleniyor..."
+
+# Decrypt edilen dosyaları git'e ekle
+git add . 2>/dev/null || {
+    log "UYARI: git add komutu başarısız oldu"
+    echo "⚠️  git add komutu başarısız oldu"
+}
+
+log "Tüm dosyalar işlendi ve git'e eklendi."
+echo "✅ Tüm dosyalar decrypt edildi ve git'e eklendi."
