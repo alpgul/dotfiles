@@ -58,7 +58,7 @@ echo "📥 SOPS ${SOPS_VERSION} indiriliyor..."
 if [ -z "$SOPS_VERSION" ]; then
     log "SOPS versiyonu alınamadı, varsayılan versiyon kullanılacak: v3.8.1"
     echo "⚠️  SOPS versiyonu alınamadı, varsayılan versiyon kullanılacak..."
-    SOPS_VERSION="v3.8.1"
+    SOPS_VERSION="v3.11.0"
 fi
 
 curl -L -o sops "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
